@@ -1,0 +1,19 @@
+body{
+    padding:50px;
+    background-image: url('../img/login-bg.jpg');
+    background-size: center;
+}
+.container{
+    max-width: 600px;
+    margin:0 auto;
+    padding:50px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    text-align: center;
+}
+.form-group{
+    margin-bottom:30px;
+}
+
+.form-btn{
+    margin-bottom: 20px;
+}
