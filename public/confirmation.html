@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation Confirmation</title>
+    <link rel="stylesheet" href="./assets/css/reservation_confirmation.css">
+</head>
+<body>
+    <h1>Reservation Confirmation</h1>
+    <div id="confirmationDetails"></div>
+    <a href="index.html" class="back-button">Back to Home</a>
+
+    <script>
+        function getQueryVariable(variable) {
+            const query = window.location.search.substring(1);
+            const vars = query.split('&');
+            for (let i = 0; i < vars.length; i++) {
+                const pair = vars[i].split('=');
+                if (decodeURIComponent(pair[0]) == variable) {
+                    return decodeURIComponent(pair[1]);
+                }
+            }
+            return false;
+        }
+
+        const confirmationDetails = document.getElementById('confirmationDetails');
+        const details = {
+            name: getQueryVariable('name'),
+            email: getQueryVariable('email'),
+            phone: getQueryVariable('phone'),
+            date: getQueryVariable('date'),
+            time: getQueryVariable('time'),
+            party_size: getQueryVariable('party_size')
+        };
+
+        confirmationDetails.innerHTML = `
+            <p><strong>Name: ${details.name}</strong></p>
+            <p><strong>Email: ${details.email}</strong></p>
+            <p><strong>Phone: ${details.phone}</strong></p>
+            <p><strong>Date: ${details.date}</strong></p>
+            <p><strong>Time: ${details.time}</strong></p>
+            <p><strong>Party Size: ${details.party_size}</strong></p>
+        `;
+    </script>
+</body>
+</html>

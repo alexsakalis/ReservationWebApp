@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const Reservation = require('../models/reservations'); // Your Mongoose Reservation model
+const Reservation = require('../models/reservations');
+const User = require('../models/User');
 
 // Replace with your MongoDB connection string
 mongoose.connect('mongodb+srv://alexsakalis7:Anndrea2001@reservationweb.zvw4pfc.mongodb.net/ReservationWebApp', 
@@ -43,7 +44,7 @@ router.post('/submit-reservation', async (req, res) => {
     }
 
     const newReservation = new Reservation({
-        fullname: name,
+        name: name,
         email: email,
         phone: phone,
         date: date,
@@ -54,7 +55,8 @@ router.post('/submit-reservation', async (req, res) => {
     // Save the new reservation to MongoDB
     try {
         const savedReservation = await newReservation.save();
-        res.send('Reservation successful!');
+        const query = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&party_size=${encodeURIComponent(party_size)}`;
+        res.redirect('/confirmation.html?' + query);
     } catch (err) {
         res.status(500).send(`Error: ${err.message}`);
     }

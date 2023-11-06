@@ -1,0 +1,64 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f9f9;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+    display: flex; /* Enable flexbox */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 80%;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center; 
+    margin-top: 20px;
+}
+
+h1 {
+    color: #32a852;
+    text-align: center;
+    margin-top: 0;
+    padding-top: 20px;
+}
+
+.confirmation-details {
+    margin-top: 20px;
+    background-color: #e7f6e7;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 5px solid #32a852;
+    text-align: center; /* Center aligns the text inside confirmation details */
+}
+
+.confirmation-details p {
+    margin: 20px auto; /* Updated margin for automatic horizontal centering */
+    width: 80%;
+}
+
+.back-button {
+    display: block; /* Make the button a block element */
+    width: 200px; /* Width of the button */
+    padding: 10px;
+    margin: 20px auto; /* Center the button horizontally */
+    background-color: #32a852;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none; /* Remove underline from link */
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media only screen and (max-width: 600px) {
+    .confirmation-details, .back-button {
+        width: 90%; /* Adjust width for smaller screens */
+    }
+}
