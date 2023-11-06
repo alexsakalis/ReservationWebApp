@@ -1,15 +1,22 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('./models/User');
+const Reservation = require('./models/reservations');
+const Employee = require('./models/employee');
 const { default: mongoose } = require('mongoose');
 const saltRounds = 10;
 const loginRoutes = require('./routes/loginRoute');
+const reservationRoute = require('./routes/reservationRoute');
+const employeeRoute = require('./routes/employeeRoute');
+
 
 const app = express();
 const port = 7000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/api', reservationRoute);
+app.use('/api', employeeRoute);
 
 app.use(express.static('public'));
 app.use('/', loginRoutes); // Register the login routes
@@ -27,6 +34,7 @@ mongoose.connect('mongodb+srv://alexsakalis7:Anndrea2001@reservationweb.zvw4pfc.
     process.exit(1);
 });
 
+app.use('/api', employeeRoute);
 
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
@@ -91,7 +99,66 @@ app.post('/registration.html', async (req, res) => {
         console.error('Error registering user:', error);
         res.status(500).send('Server error.');
     }
-})
+});
+
+app.use('/', reservationRoute);
+
+
+app.post('/employee-register', async (req, res) => {
+    try {
+        // Check if user already exists
+        const existingEmployee = await Employee.findOne({ email: req.body.email });
+        if (existingEmployee) {
+            return res.status(400).send('Employee already exists with this email.');
+        }
+
+        // Check if passwords match
+        if (req.body.password !== req.body.confirmPassword) {
+            return res.status(400).send('Passwords do not match.');
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+        // Create and save the new user
+        const newEmployee = new Employee({
+            name: req.body.name,
+            email: req.body.email,
+            role: req.body.role,
+            password: hashedPassword
+        });
+
+        await newEmployee.save();
+
+        // Redirect to login page or send a success response
+        res.redirect('/employee-login.html'); // Adjust the redirect as per your project
+    } catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).send('Server error during registration.');
+    }
+});
+
+app.post('/employee-login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const employee = await Employee.findOne({ email });
+        if (!employee) {
+            return res.status(401).send('Login failed');
+        }
+
+        const validPassword = await bcrypt.compare(password, employee.password);
+        if (!validPassword) {
+            return res.status(401).send('Login failed');
+        }
+
+        res.redirect('/dashboard.html'); 
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).send('Server error during login.');
+    }
+});
+
 
 
 app.listen(port, () => {

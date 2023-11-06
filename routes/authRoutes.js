@@ -32,9 +32,31 @@ app.post('/login.html', async (req, res) => {
     }
 });
 
+router.post('/register', async (req, res) => {
+    try {
+        const newUser = new User(req.body);
+        await newUser.save();
+        res.status(201).send('User registered successfully');
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+});
 
-// Starting the server (assuming this is your main server file)
-const PORT = 3000; // or any other port you prefer
+router.post('/login', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
+            return res.status(401).send('Invalid credentials');
+        }
+        res.send('Login successful');
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+module.exports = router; 
+
+const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservations</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <h1>Reservation List</h1>
+    <div id="reservations"></div>
+
+    <script>
+        fetch('/api/reservations')
+            .then(response => response.json())
+            .then(data => {
+                const reservationsDiv = document.getElementById('reservations');
+                data.forEach(reservation => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `Customer: ${reservation.customerName}, Date: ${new Date(reservation.date).toLocaleString()}, Number of People: ${reservation.numberOfPeople}`;
+                    reservationsDiv.appendChild(div);
+                });
+            })
+            .catch(error => console.error('Error fetching reservations:', error));
+    </script>
+</body>
+</html>

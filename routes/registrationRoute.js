@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const User = require('./User'); // Assuming your User model path is './User'
+const User = require('../models/User');
 
 const app = express();
 const saltRounds = 10;

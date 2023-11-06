@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees</title>
+</head>
+<body>
+    <h1>Employee List</h1>
+    <div id="employees"></div>
+
+    <script>
+        fetch('/api/employees')
+            .then(response => response.json())
+            .then(data => {
+                const employeesDiv = document.getElementById('employees');
+                data.forEach(employee => {
+                    const div = document.createElement('div');
+                    div.innerHTML = `Name: ${employee.name}, Role: ${employee.role}`;
+                    employeesDiv.appendChild(div);
+                });
+            })
+            .catch(error => console.error('Error fetching employees:', error));
+    </script>
+</body>
+</html>
