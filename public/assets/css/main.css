@@ -1,7 +1,10 @@
 body{
-    padding:50px;
-    background-image: url('../img/login-bg.jpg');
-    background-size: center;
+    width: 100%;
+    height: 100vh;
+    background: url("../img/flat-lay-arrangement-with-salad-box-sauce.jpg") top center;
+    background-size: cover;
+    position: relative;
+    padding: 0;
 }
 .container{
     max-width: 600px;
