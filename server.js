@@ -159,6 +159,42 @@ app.post('/employee-login', async (req, res) => {
     }
 });
 
+app.post('/submit-reservation', async (req, res) => {
+    try {
+        console.log(req.body); 
+        const { name, email, phone, date, time, party_size } = req.body;
+
+        if (!name || !email || !phone || !date || !time || !party_size) {
+            return res.status(400).send('All fields are required.');
+        }
+
+        const partySizeNumber = parseInt(party_size, 10);
+        if (isNaN(partySizeNumber) || partySizeNumber <= 0) {
+            return res.status(400).send('Invalid party size.');
+        }
+
+        const newReservation = new Reservation({
+            name,
+            email,
+            phone,
+            date,
+            time,
+            party_size: partySizeNumber
+        });
+
+
+        // res.redirect('/index.html'); // Redirect to a confirmation page or index page
+        const query = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&party_size=${encodeURIComponent(party_size)}`;
+        res.redirect('/confirmation.html?' + query);
+        await newReservation.save();
+
+
+    } catch (error) {
+        console.error('Error submitting reservation:', error);
+        res.status(500).send('Server error.');
+    }
+});
+
 
 
 app.listen(port, () => {

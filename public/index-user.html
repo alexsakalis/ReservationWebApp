@@ -585,27 +585,6 @@
           </div>
           <div class="text-center"><button type="submit">Book a Table</button></div>
       </form>
-      <script>
-        document.getElementById("reservation-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            if ("Notification" in window) {
-                if (Notification.permission === "granted") {
-                    new Notification("Table Reserved", {
-                        body: "Your table has been successfully reserved!"
-                    });
-                } else if (Notification.permission !== "denied") {
-                    Notification.requestPermission().then(function (permission) {
-                        if (permission === "granted") {
-                            new Notification("Table Reserved", {
-                                body: "Your table has been successfully reserved!"
-                            });
-                        }
-                    });
-                }
-            }
-        });
-    </script>
-    
       
       
 
