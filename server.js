@@ -25,7 +25,7 @@ app.use('/api', managerRoute);
 
 app.use(express.static('public'));
 app.use('/', loginRoutes); // Register the login routes
-
+//whatever
 // MongoDB Connection
 mongoose.connect('mongodb+srv://alexsakalis7:Anndrea2001@reservationweb.zvw4pfc.mongodb.net/ReservationWebApp', {
     useNewUrlParser: true,
