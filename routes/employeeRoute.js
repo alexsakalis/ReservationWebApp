@@ -21,9 +21,8 @@ router.get('/employees/:id', getEmployee, (req, res) => {
 router.post('/employees', async (req, res) => {
     const employee = new Employee({
         name: req.body.name,
-        role: req.body.role,
         email: req.body.email,
-        // other fields...
+        role: req.body.role,
     });
 
     try {

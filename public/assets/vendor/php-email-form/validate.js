@@ -23,4 +23,22 @@ function php_email_form(thisForm, action, formData) {
   .catch((error) => {
     displayError(thisForm, error);
   });
+            document.getElementById("submit-reservation").addEventListener("submit", function(event) {
+                event.preventDefault();
+                if ("Notification" in window) {
+                    if (Notification.permission === "granted") {
+                        new Notification("Table Reserved", {
+                            body: "Your table has been successfully reserved!",
+                        });
+                    } else if (Notification.permission !== "denied") {
+                        Notification.requestPermission().then(function (permission) {
+                            if (permission === "granted") {
+                                new Notification("Table Reserved", {
+                                    body: "Your table has been successfully reserved!",
+                                });
+                            }
+                        });
+                    }
+                }
+            });
 }

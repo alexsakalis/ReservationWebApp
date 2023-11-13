@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 const User = require('./models/User');
 const Reservation = require('./models/reservations');
 const Employee = require('./models/employee');
@@ -8,15 +9,19 @@ const saltRounds = 10;
 const loginRoutes = require('./routes/loginRoute');
 const reservationRoute = require('./routes/reservationRoute');
 const employeeRoute = require('./routes/employeeRoute');
-
+const ratingRoute = require('./routes/ratingRoute');
+const managerRoute = require('./routes/managerRoute');
 
 const app = express();
 const port = 7000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use('/api', reservationRoute);
 app.use('/api', employeeRoute);
+app.use('/api', ratingRoute);
+app.use('/api', managerRoute);
 
 app.use(express.static('public'));
 app.use('/', loginRoutes); // Register the login routes
@@ -131,7 +136,7 @@ app.post('/employee-register', async (req, res) => {
         await newEmployee.save();
 
         // Redirect to login page or send a success response
-        res.redirect('/employee-login.html'); // Adjust the redirect as per your project
+        res.redirect('/employee-login.html'); 
     } catch (error) {
         console.error('Registration error:', error);
         res.status(500).send('Server error during registration.');

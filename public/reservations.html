@@ -8,8 +8,42 @@
 
 </head>
 <body>
-    <h1>Reservation List</h1>
     <div id="reservations"></div>
+
+    <section id="reservation-modification-table" class="reservation-modification-table">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Reservation Modification Table</h2>
+                <p>Edit or Modify Reservations</p>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Reservation Time</th>
+                            <th>Party Size</th>
+                            <th>Special Requests</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Reservation details for user 1 -->
+                        <tr>
+                            <td>John Doe</td>
+                            <td>2023-10-31 19:00</td>
+                            <td>4</td>
+                            <td>Window seat</td>
+                            <td>
+                                <a href="#">Edit</a> | <a href="#">Delete</a>
+                            </td>
+                        </tr>
+                        <!-- Add more reservation details for other users as needed -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
     <script>
         fetch('/api/reservations')
@@ -18,7 +52,7 @@
                 const reservationsDiv = document.getElementById('reservations');
                 data.forEach(reservation => {
                     const div = document.createElement('div');
-                    div.innerHTML = `Customer: ${reservation.customerName}, Date: ${new Date(reservation.date).toLocaleString()}, Number of People: ${reservation.numberOfPeople}`;
+                    div.innerHTML = `Name: ${reservation.name}, Email: ${reservation.email}, Phone: ${reservation.phone}, Date: ${new Date(reservation.date).toLocaleString()}, Time: ${reservation.time}, Number of People: ${reservation.party_size}`;
                     reservationsDiv.appendChild(div);
                 });
             })
