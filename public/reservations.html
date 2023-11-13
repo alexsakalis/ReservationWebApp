@@ -8,9 +8,9 @@
 
 </head>
 <body>
-    <div id="reservations"></div>
+    <!-- <div id="reservations"></div> -->
 
-    <section id="reservation-modification-table" class="reservation-modification-table">
+    <!-- <section id="reservation-modification-table" class="reservation-modification-table">
         <div class="container" data-aos="fade-up">
             <div class="section-title">
                 <h2>Reservation Modification Table</h2>
@@ -27,9 +27,9 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody> -->
                         <!-- Reservation details for user 1 -->
-                        <tr>
+                        <!-- <tr>
                             <td>John Doe</td>
                             <td>2023-10-31 19:00</td>
                             <td>4</td>
@@ -37,13 +37,35 @@
                             <td>
                                 <a href="#">Edit</a> | <a href="#">Delete</a>
                             </td>
-                        </tr>
+                        </tr> -->
                         <!-- Add more reservation details for other users as needed -->
-                    </tbody>
+                    <!-- </tbody>
                 </table>
             </div>
         </div>
-    </section>
+    </section> -->
+    <style>
+        body {
+            padding: 20px;
+        }
+ 
+        #reservations {
+            margin-top: 20px;
+        }
+ 
+        .reservation-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Reservation List</h1>
+        <div id="reservations" class="mt-3"></div>
+    </div>
 
     <script>
         fetch('/api/reservations')
@@ -52,11 +74,15 @@
                 const reservationsDiv = document.getElementById('reservations');
                 data.forEach(reservation => {
                     const div = document.createElement('div');
-                    div.innerHTML = `Name: ${reservation.name}, Email: ${reservation.email}, Phone: ${reservation.phone}, Date: ${new Date(reservation.date).toLocaleString()}, Time: ${reservation.time}, Number of People: ${reservation.party_size}`;
+                    div.className = 'reservation-card';
+                    div.innerHTML = `<p><strong>Name:</strong> ${reservation.name}, <p><strong>Email:</strong> ${reservation.email}, <p><strong>Phone:</strong> ${reservation.phone},<p><strong> Date:</strong> ${new Date(reservation.date).toLocaleString()}, <p><strong>Time: </strong>${reservation.time}, <p><strong>Number of People:</strong> ${reservation.party_size}`;
                     reservationsDiv.appendChild(div);
+                    
                 });
             })
             .catch(error => console.error('Error fetching reservations:', error));
     </script>
+
+    
 </body>
 </html>
