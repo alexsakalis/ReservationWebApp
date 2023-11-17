@@ -1727,3 +1727,7 @@ section {
   font-size: 13px;
   color: #fff;
 }
+
+.custom-textarea {
+  height: 150px;
+}

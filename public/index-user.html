@@ -313,37 +313,40 @@
 
   </section>
   <!-- User Ratings Form Section -->
-<section id="user-ratings" class="d-flex align-items-center">
-    <div class="container position-relative text-center text-lg-start" data-aos="zoom-in" data-aos-delay="100">
+  <section id="book-a-table" class="book-a-table">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        <h2>Leave us a Review!</h2>
+      </div>
+
+      <form action="#" method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
         <div class="row">
-            <div class="col-lg-8">
-                <h2>Rate Opa's!</h2>
-                <form action="#" method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
-                    <div class="row">
-                        <div class="col-lg-6 form-group">
-                            <input type="text" name="user_name" class="form-control" id="user_name" placeholder="Your Name" required>
-                        </div>
-                        <div class="col-lg-6 form-group">
-                            <input type="email" name="user_email" class="form-control" id="user_email" placeholder="Your Email" required>
-                        </div>
-                        <div class="col-lg-6 form-group">
-                            <input type="number" name="user_rating" class="form-control" id="user_rating" placeholder="Your Rating (1-5)" min="1" max="5" required>
-                        </div>
-                        <div class="col-lg-6 form-group">
-                            <input type="date" name="rating_date" class="form-control" id="rating_date" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" name="user_review" rows="4" placeholder="Your Review"></textarea>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit">Submit Rating</button>
-                    </div>
-                </form>
+            <div class="col-lg-4 col-md-6 form-group">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                <div class="validate"></div>
+            </div>
+            <div class="col-lg-4 col-md-6 form-group mt-3 mt-md-0">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                <div class="validate"></div>
+            </div>
+            <div class="col-lg-4 col-md-6 form-group mt-3 mt-md-0">
+              <input type="number" name="user_rating" class="form-control" id="user_rating" placeholder="Your Rating (1-5)" min="1" max="5" required></div>
             </div>
         </div>
-    </div>
+        <div class="form-group mt-3">
+            <textarea class="form-control custom-textarea" name="message" rows="3" placeholder="Message"></textarea>
+            <div class="submit-review"></div>
+        </div>
+        <div class="mb-3">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your booking request was sent. We will call back or send an Email to confirm your reservation. Thank you!</div>
+        </div>
+        <div class="text-center"><button type="submit">Leave Review!</button></div>
+        
 </section>
+
   <!-- End Menu Section -->
 
     <!-- ======= Specials Section ======= -->
