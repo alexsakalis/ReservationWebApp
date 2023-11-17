@@ -11,6 +11,63 @@ mongoose.connect('mongodb+srv://alexsakalis7:Anndrea2001@reservationweb.zvw4pfc.
      useUnifiedTopology: true 
 });
 
+// GET route to fetch the reservations
+router.get('/', async (req, res) => {
+    try {
+    const reservations = await Reservation.find();
+    res.json(reservations);
+    } catch(error) {
+        console.error('Error fetching reservations:', error);
+        res.status(500).send('Server error while fetching reservations.');
+    }
+});
+
+router.get('/:reservationId', async (req, res) => {
+    try {
+        const reservationId = req.params.reservationId;
+        const reservation = await Reservation.findById(reservationId);
+
+        if (!reservation) {
+            return res.status(404).json({message: 'Reservation not found'});
+        }
+
+        res.json(reservation);
+    } catch (error) {
+        console.error('Error fetching reservation:', error);
+        res.status(500).json({ message: 'Server error while fetching reservation'});
+    }
+});
+
+router.put('/:reservationId', async (req, res) => {
+    try {
+        const { name, email, phone, date, time, party_size } = req.body;
+        const { reservationId } = req.params;
+
+        // Find the reservation by ID
+        const reservation = await Reservation.findById(reservationId);
+
+        if (!reservation) {
+            return res.status(404).json({ error: 'Reservation not found' });
+        }
+
+        // Update reservation properties
+        reservation.name = name;
+        reservation.email = email;
+        reservation.phone = phone;
+        reservation.date = date;
+        reservation.time = time;
+        reservation.party_size = party_size;
+
+        // Save the updated reservation
+        await reservation.save();
+
+        res.status(200).json({ message: 'Reservation updated successfully' });
+    } catch (error) {
+        console.error('Error updating reservation:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 router.post('/submit-reservation', async (req, res) => {
     const { name, email, phone, date, time, party_size } = req.body;
 
@@ -62,15 +119,23 @@ router.post('/submit-reservation', async (req, res) => {
     }
 });
 
-router.get('/reservations', async (req, res) => {
-    const reservations = await Reservation.find();
-    res.json(reservations);
-});
 
-router.post('/reservations', async (req, res) => {
-    const newReservation = new Reservation(req.body);
-    await newReservation.save();
-    res.status(201).json(newReservation);
+// router.post('/reservations', async (req, res) => {
+//     const newReservation = new Reservation(req.body);
+//     await newReservation.save();
+//     res.status(201).json(newReservation);
+// });
+
+router.delete('/:id', async(req, res) => {
+    try {
+        const result = await Reservation.deleteOne({ _id: req.params.id });
+        if (result.deletedCount === 0) {
+            return res.status(404).send('Reservation not found');
+        }
+        res.send('Reservation deleted');
+    } catch (error) {
+        res.status(500).send('Error deleting reservation');
+    }
 });
 
 module.exports = router;

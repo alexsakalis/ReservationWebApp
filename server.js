@@ -18,14 +18,14 @@ const port = 7000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', reservationRoute);
-app.use('/api', employeeRoute);
-app.use('/api', ratingRoute);
-app.use('/api', managerRoute);
+app.use('/api/reservations', reservationRoute);
+app.use('/api/employees', employeeRoute);
+app.use('/api/ratings', ratingRoute);
+app.use('/api/managers', managerRoute);
 
 app.use(express.static('public'));
 app.use('/', loginRoutes); // Register the login routes
-//whatever
+
 // MongoDB Connection
 mongoose.connect('mongodb+srv://alexsakalis7:Anndrea2001@reservationweb.zvw4pfc.mongodb.net/ReservationWebApp', {
     useNewUrlParser: true,
@@ -38,8 +38,6 @@ mongoose.connect('mongodb+srv://alexsakalis7:Anndrea2001@reservationweb.zvw4pfc.
     console.error('Failed to connect to MongoDB', err);
     process.exit(1);
 });
-
-app.use('/api', employeeRoute);
 
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
@@ -166,7 +164,6 @@ app.post('/employee-login', async (req, res) => {
 
 app.post('/submit-reservation', async (req, res) => {
     try {
-        console.log(req.body); 
         const { name, email, phone, date, time, party_size } = req.body;
 
         if (!name || !email || !phone || !date || !time || !party_size) {
@@ -187,18 +184,17 @@ app.post('/submit-reservation', async (req, res) => {
             party_size: partySizeNumber
         });
 
-
-        // res.redirect('/index.html'); // Redirect to a confirmation page or index page
-        const query = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&party_size=${encodeURIComponent(party_size)}`;
-        res.redirect('/confirmation.html?' + query);
         await newReservation.save();
 
+        const query = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&party_size=${encodeURIComponent(party_size)}`;
+        res.redirect('/confirmation.html?' + query);
 
     } catch (error) {
         console.error('Error submitting reservation:', error);
         res.status(500).send('Server error.');
     }
 });
+
 
 
 

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Reservation</title>
+</head>
+<body>
+    <h1>Edit Reservation</h1>
+    <form id="editReservationForm" method="PUT" action="/api/reservations/{reservationId}">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone"><br><br>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date"><br><br>
+
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time"><br><br>
+
+        <label for="party_size">Number of People:</label>
+        <input type="number" id="party_size" name="party_size" min="1" max="20"><br><br>
+
+        <!-- Add an id to the "Update Reservation" button -->
+        <button type="submit" id="updateButton">Update Reservation</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const reservationId = urlParams.get('reservationId');
+
+            if (!reservationId) {
+                console.error('No reservation ID provided in the URL.');
+                return;
+            }
+
+            fetch(`/api/reservations/${reservationId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(reservation => {
+                    document.getElementById('name').value = reservation.name;
+                    document.getElementById('email').value = reservation.email;
+                    document.getElementById('phone').value = reservation.phone;
+                    document.getElementById('date').value = formatDateForInput(reservation.date);
+                    document.getElementById('time').value = formatTimeForInput(reservation.time);
+                    document.getElementById('party_size').value = validatePartySize(reservation.party_size);
+                })
+                .catch(error => console.error('Error:', error));
+
+            // Update button event listener
+            const updateButton = document.querySelector('#updateButton');
+            updateButton.addEventListener('click', async (event) => {
+                event.preventDefault(); 
+
+                // Gather the updated information from the form inputs
+                const updatedName = document.getElementById('name').value;
+                const updatedEmail = document.getElementById('email').value;
+                const updatedPhone = document.getElementById('phone').value;
+                const updatedDate = document.getElementById('date').value;
+                const updatedTime = document.getElementById('time').value;
+                const updatedPartySize = document.getElementById('party_size').value;
+
+                // Prepare the data to be sent in the PUT request
+                const updatedReservationData = {
+                    name: updatedName,
+                    email: updatedEmail,
+                    phone: updatedPhone,
+                    date: updatedDate,
+                    time: updatedTime,
+                    party_size: updatedPartySize,
+                };
+
+                try {
+                    // Send a PUT request to update the reservation
+                    const response = await fetch(`/api/reservations/${reservationId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(updatedReservationData),
+                    });
+
+                    if (response.ok) {
+                        // Reservation updated successfully, you can handle the response as needed
+                        alert('Reservation updated successfully.');
+                        // Redirect to reservations.html or any other appropriate page
+                        window.location.href = '/reservations.html';
+                    } else {
+                        // Handle errors if the request is not successful
+                        alert('Failed to update reservation.');
+                    }
+                } catch (error) {
+                    console.error('Error updating reservation:', error);
+                    alert('An error occurred while updating the reservation.');
+                }
+            });
+        });
+
+
+    function formatDateForInput(dateStr) {
+        if (!Date.parse(dateStr)) {
+            console.error('Invalid date string:', dateStr);
+            return ''; 
+        }
+        const date = new Date(dateStr);
+        return date.toISOString().split('T')[0]; 
+    }
+
+    function formatTimeForInput(timeStr) {
+        // Check if the input is a valid string
+        if (typeof timeStr !== 'string' || !timeStr.trim()) {
+            console.error('Invalid or empty time string:', timeStr);
+            return ''; // Return a default value or handle as appropriate
+        }
+
+        // Check if timeStr is already in 'HH:MM' format
+        const timeRegex = /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/;
+        if (timeRegex.test(timeStr)) {
+            return timeStr; 
+        }
+
+        let hours, minutes;
+        // Example: Splitting '14:30:00' or '14:30' to extract hours and minutes
+        const parts = timeStr.split(':');
+        if (parts.length >= 2) {
+            hours = parseInt(parts[0], 10);
+            minutes = parseInt(parts[1], 10);
+        }
+
+        // Validate hours and minutes
+        if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+            console.error('Invalid time:', timeStr);
+            return ''; // Return a default value or handle as appropriate
+        }
+
+        // Format to 'HH:MM'
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    }
+
+
+
+
+
+    function validatePartySize(size) {
+        const minSize = 1, maxSize = 20;
+        return Math.min(Math.max(size, minSize), maxSize);
+    }
+
+
+    </script>
+</body>
+</html>

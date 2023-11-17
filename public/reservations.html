@@ -3,56 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Reservations</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-</head>
-<body>
-    <!-- <div id="reservations"></div> -->
-
-    <!-- <section id="reservation-modification-table" class="reservation-modification-table">
-        <div class="container" data-aos="fade-up">
-            <div class="section-title">
-                <h2>Reservation Modification Table</h2>
-                <p>Edit or Modify Reservations</p>
-            </div>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Customer Name</th>
-                            <th>Reservation Time</th>
-                            <th>Party Size</th>
-                            <th>Special Requests</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody> -->
-                        <!-- Reservation details for user 1 -->
-                        <!-- <tr>
-                            <td>John Doe</td>
-                            <td>2023-10-31 19:00</td>
-                            <td>4</td>
-                            <td>Window seat</td>
-                            <td>
-                                <a href="#">Edit</a> | <a href="#">Delete</a>
-                            </td>
-                        </tr> -->
-                        <!-- Add more reservation details for other users as needed -->
-                    <!-- </tbody>
-                </table>
-            </div>
-        </div>
-    </section> -->
     <style>
-        body {
-            padding: 20px;
-        }
- 
-        #reservations {
-            margin-top: 20px;
-        }
- 
+        body { padding: 20px; }
+        #reservations { margin-top: 20px; }
         .reservation-card {
             border: 1px solid #ccc;
             padding: 10px;
@@ -69,20 +23,81 @@
 
     <script>
         fetch('/api/reservations')
-            .then(response => response.json())
+            .then(response => {
+                if(!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+            return response.json()})
             .then(data => {
                 const reservationsDiv = document.getElementById('reservations');
-                data.forEach(reservation => {
+                data.forEach((reservation) => {
                     const div = document.createElement('div');
                     div.className = 'reservation-card';
-                    div.innerHTML = `<p><strong>Name:</strong> ${reservation.name}, <p><strong>Email:</strong> ${reservation.email}, <p><strong>Phone:</strong> ${reservation.phone},<p><strong> Date:</strong> ${new Date(reservation.date).toLocaleString()}, <p><strong>Time: </strong>${reservation.time}, <p><strong>Number of People:</strong> ${reservation.party_size}`;
+                    div.innerHTML = `
+                        <p><strong>Name:</strong> <span id="name-${reservation._id}">${reservation.name}</span></p>
+                        <p><strong>Email:</strong> <span id="email-${reservation._id}">${reservation.email}</span></p>
+                        <p><strong>Phone:</strong> <span id="phone-${reservation._id}">${reservation.phone}</span></p>
+                        <p><strong>Date:</strong> <span id="date-${reservation._id}">${new Date(reservation.date).toLocaleString()}</span></p>
+                        <p><strong>Time:</strong> <span id="time-${reservation._id}">${reservation.time}</span></p>
+                        <p><strong>Number of People:</strong> <span id="party-size-${reservation._id}">${reservation.party_size}</span></p>
+                    `;
+
+                    // Create Edit button
+                    const editButton = document.createElement('button');
+                    editButton.textContent = 'Edit';
+                    editButton.onclick = function() {
+                        redirectToEditPage(reservation._id);
+                    };
+
+                    // Create Delete button
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.onclick = function() {
+                        deleteReservation(reservation._id);
+                    };
+
+                    // Append buttons to div
+                    div.appendChild(editButton);
+                    div.appendChild(deleteButton);
+
                     reservationsDiv.appendChild(div);
-                    
                 });
+
             })
             .catch(error => console.error('Error fetching reservations:', error));
-    </script>
 
-    
+        function editReservation(id) {
+            window.location.href = `reservation-edit.html?reservationId=${id}`;
+        }
+
+
+        async function deleteReservation(id) {
+            const confirmation = confirm('Are you sure you want to delete this reservation?');
+            if (confirmation) {
+                try {
+                    const response = await fetch(`/api/reservations/${id}`, { method: 'DELETE' });
+                    if (!response.ok) {
+                        throw new Error('Error deleting reservation');
+                    }
+                    alert('Reservation successfully deleted.');
+                    location.reload();
+                } catch (error) {
+                    alert('Failed to delete reservation.');
+                    console.error('Error:', error);
+                }
+            } else {
+                alert('Reservation cancellation has been confirmed.');
+                alert('This reservation has been cancelled.');
+                location.reload();
+            }
+        }
+
+        function redirectToEditPage(reservationId) {
+            window.location.href = `reservation-edit.html?reservationId=${reservationId}`;
+}
+
+
+
+    </script>
 </body>
 </html>
