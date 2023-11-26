@@ -1,0 +1,56 @@
+    body {
+        font-family: "Playfair Display", serif;
+        background-color: #0c0b09;
+        color: #cda45e; /* Match the font color from the dashboard page */
+        padding: 20px;
+    }
+    
+    #reservations {
+        margin-top: 20px;
+    }
+    
+    .reservation-card {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    
+    .container {
+        font-family: "Playfair Display", serif;
+        color: #cda45e; /* Match the font color from the dashboard page */
+    }
+    
+    .mt-4 {
+        margin-top: 1.5rem !important;
+    }
+    
+    .mt-3 {
+        margin-top: 1rem !important;
+    }
+
+    /* Modern button style for Edit and Delete buttons */
+button.edit-button, button.delete-button {
+    background-color: #cda45e; /* Match the button color from the dashboard page */
+    color: #0c0b09; /* Match the button text color from the dashboard page */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-right: 10px; /* Add margin between buttons */
+  }
+  
+  button.edit-button:hover, button.delete-button:hover {
+    background-color: #d9ba85; /* Match the button hover color from the dashboard page */
+    transform: scale(1.05); /* Add a slight scale effect on hover */
+  }
+
+.center-heading {
+    text-align: center;
+    margin-top: 20px;
+}
+  
+    
+    

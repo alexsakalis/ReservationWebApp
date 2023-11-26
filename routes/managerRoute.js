@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const Manager = require('../models/manager');
 const router = express.Router();
 
-router.post('/manager', async (req, res) => {
+router.post('/manager-register', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password,10);
         const manager = new Manager({

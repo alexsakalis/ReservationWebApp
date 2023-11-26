@@ -1,0 +1,82 @@
+/* Reset some default browser styles */
+body, h1, ul {
+    margin: 0;
+    padding: 0;
+    font-family: "Playfair Display", serif;
+}
+
+/* Centering and Positioning */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #0c0b09;
+    color: #fff;
+}
+
+header {
+    font-size: 48px;
+    font-weight: 700;
+    font-family: "Playfair Display", serif;
+    color: #cda45e;
+    text-align: center;
+}
+
+.main-content {
+    text-align: center;
+    margin-top: 20px; /* Adjust the margin as needed */
+    padding-top: 40px; /* Adjust the padding as needed */
+}
+
+.centered-links {
+    list-style: none;
+    padding: 0;
+}
+
+.centered-links li {
+    margin-bottom: 15px;
+}
+
+.centered-links a {
+    font-family: "Playfair Display", serif; /* Match the font */
+    color: #cda45e;
+    text-decoration: none;
+    font-size: 24px; /* Adjust the font size as needed */
+}
+
+.centered-links a:hover {
+    color: #d9ba85;
+}
+
+/* Welcome Message and Logout Button */
+#top-right-container {
+    position: relative;
+}
+
+#welcome-message, #logout-button {
+    font-family: "Playfair Display", serif; /* Match the font */
+    font-size: 16px; /* Adjust the font size as needed */
+    font-weight: bold;
+    color: #cda45e;
+}
+
+#welcome-message {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#logout-button {
+    position: absolute;
+    top: 40px; /* Adjust the vertical position as needed */
+    right: 20px;
+    font-size: 16px; /* Two font sizes smaller than the welcome message */
+    color: #cda45e;
+    text-decoration: none;
+}
+
+#logout-button:hover {
+    color: #d9ba85;
+}

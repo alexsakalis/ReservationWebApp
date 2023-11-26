@@ -2,18 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Restaurant Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/manager-dashboard.css">
+    <script>
+        window.onload = function () {
+            var managerName = "Alex";
+            var welcomeMessage = document.getElementById("welcome-message");
+            welcomeMessage.innerHTML = "Welcome, " + managerName;
+
+            var logoutButton = document.getElementById("logout-button");
+            logoutButton.addEventListener("click", function() {
+                window.location.href = "index.html";
+            })
+        }
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Restaurant Dashboard</h1>
-        <nav>
-            <ul>
-                <li><a href="reservations.html">Manage Reservations</a></li>
-                <li><a href="employees.html">Manage Employees</a></li>
-            </ul>
-        </nav>
+    <header>
+        <h1>OPA'S</h1>
+    </header>
+    <div class="main-content">
+        <div id="welcome-message"></div>
+        <div id="logout-section">
+            <a id="logout-button" href="index.html">Logout</a>
+        </div>
+        
+        <ul class="centered-links">
+            <li><a href="reservations.html">Manage Reservations</a></li>
+            <li><a href="employees.html">Manage Employees</a></li>
+        </ul>
     </div>
+
 </body>
 </html>
