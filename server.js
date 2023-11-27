@@ -1,16 +1,21 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
+
+// Models
 const User = require('./models/User');
 const Reservation = require('./models/reservations');
 const Employee = require('./models/employee');
-const { default: mongoose } = require('mongoose');
-const saltRounds = 10;
-const loginRoutes = require('./routes/loginRoute');
+const Manager = require('./models/manager');
+const Rating = require('./models/rating');
+
+// Routers
 const reservationRoute = require('./routes/reservationRoute');
 const employeeRoute = require('./routes/employeeRoute');
 const ratingRoute = require('./routes/ratingRoute');
 const managerRoute = require('./routes/managerRoute');
+const saltRounds = 10;
 
 const app = express();
 const port = 7000;
@@ -24,7 +29,65 @@ app.use('/api/ratings', ratingRoute);
 app.use('/api/managers', managerRoute);
 
 app.use(express.static('public'));
-app.use('/', loginRoutes); // Register the login routes
+
+// Manager registration and login routes
+app.post('/manager-register', async (req, res) => {
+    try {
+        const existingManager = await Manager.findOne({ email: req.body.email });
+        if (existingManager) {
+            return res.status(400).send('Manager already exists with this email.');
+        }
+
+        // Check if passwords match
+        if (req.body.password !== req.body.confirmPassword) {
+            return res.status(400).send('Passwords do not match.');
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+        // Create and save the new manager
+        const newManager = new Manager({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword
+        });
+
+        await newManager.save();
+
+        // Redirect to login page or send a success response
+        res.redirect('/manager-login.html');
+    } catch (error) {
+        console.error('Manager registration error:', error);
+        res.status(500).send('Server error during manager registration.');
+    }
+});
+
+app.post('/manager-login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const employee = await Employee.findOne({ email });
+        if (!employee) {
+            return res.status(401).send('Login failed');
+        }
+
+        const validPassword = await bcrypt.compare(password, employee.password);
+        if (!validPassword) {
+            return res.status(401).send('Login failed');
+        }
+
+        res.redirect('/dashboard.html'); 
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).send('Server error during login.');
+    }
+});
+
+// GET route for manager login
+app.get('/manager-login.html', (req, res) => {
+    res.redirect('/dashboard.html');
+});
 
 // MongoDB Connection
 mongoose.connect('mongodb+srv://alexsakalis7:Anndrea2001@reservationweb.zvw4pfc.mongodb.net/ReservationWebApp', {
@@ -43,7 +106,7 @@ app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
-app.post('./login.html', async (req, res) => {
+app.post('./employee-login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -69,7 +132,6 @@ app.post('./login.html', async (req, res) => {
         res.status(500).send('Server error.');
     }
 });
-
 
 app.post('/registration.html', async (req, res) => {
     const { email, password, confirmPassword } = req.body;
@@ -103,9 +165,6 @@ app.post('/registration.html', async (req, res) => {
         res.status(500).send('Server error.');
     }
 });
-
-app.use('/', reservationRoute);
-
 
 app.post('/employee-register', async (req, res) => {
     try {
@@ -194,6 +253,35 @@ app.post('/submit-reservation', async (req, res) => {
         res.status(500).send('Server error.');
     }
 });
+
+app.post('/submit-rating', async (req, res) => {
+    try {
+        console.log('Received request:', req.body); 
+        const { userName, rating, reviewText } = req.body;
+
+        // Validate incoming data
+        if (!userName || rating === undefined || (typeof reviewText !== 'string' && reviewText !== undefined)) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        // Create a new rating document
+        const newRating = new Rating({
+            userName,
+            rating,
+            reviewText,
+            createdAt: new Date(),
+        });
+
+        // Save the new rating document to the database
+        await newRating.save();
+
+        res.status(201).json({ message: 'Rating submitted successfully.' });
+    } catch (error) {
+        console.error('Error submitting rating:', error);
+        res.status(500).json({ message: 'Server error.', error: error.message });
+    }
+});
+
 
 
 

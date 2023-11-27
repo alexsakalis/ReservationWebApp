@@ -1,0 +1,75 @@
+body {
+    font-family: "Playfair Display", serif;
+    background-color: #0c0b09;
+    color: #cda45e; /* Font color */
+    padding: 20px;
+}
+
+#employees {
+    margin-top: 20px;
+}
+
+.employee-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #1e1d1b; /* Background color for cards */
+}
+
+.container {
+    max-width: 800px; /* Adjust as needed */
+    margin: 0 auto; /* Center the container */
+}
+
+/* Margin top classes */
+.mt-4 {
+    margin-top: 1.5rem !important;
+}
+
+.mt-3 {
+    margin-top: 1rem !important;
+}
+
+/* Button Styles */
+button.edit-button, button.delete-button {
+    background-color: #cda45e;
+    color: #0c0b09;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-right: 10px;
+}
+
+button.edit-button:hover, button.delete-button:hover {
+    background-color: #d9ba85;
+    transform: scale(1.05);
+}
+
+.center-heading {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#backToHomeButton {
+    position: fixed;
+    top: 10px; /* Adjust the top spacing as needed */
+    right: 10px; /* Adjust the right spacing as needed */
+    z-index: 999; /* Ensure it's above other content */
+    font-family: "Playfair Display", serif;
+    background-color: #cda45e;
+    color: #0c0b09;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#backToHomeButton:hover {
+    background-color: #d9ba85;
+}

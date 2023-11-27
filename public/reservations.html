@@ -12,6 +12,7 @@
 </head>
 <body>
     <div class="container">
+        <button id="backToHomeButton" class="btn btn-primary">Back to Home </button>
         <h1 class="mt-4 center-heading">OPA'S RESERVATION LIST</h1>
         <div id="reservations" class="mt-3"></div>
     </div>
@@ -91,7 +92,12 @@
 
         function redirectToEditPage(reservationId) {
             window.location.href = `reservation-edit.html?reservationId=${reservationId}`;
-}
+        }
+
+        const backToHomeButton = document.getElementById('backToHomeButton');
+        backToHomeButton.addEventListener('click', () => {
+            window.location.href = '/dashboard.html'; 
+        });
 
 
 

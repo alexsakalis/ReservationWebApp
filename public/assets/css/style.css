@@ -1242,6 +1242,114 @@ section {
 }
 
 /*--------------------------------------------------------------
+# Review Section
+--------------------------------------------------------------*/
+.restaurant-rating-section .php-email-form2 {
+  width: 100%;
+}
+
+.restaurant-rating-section .php-email-form2 .form-group {
+  padding-bottom: 8px;
+}
+
+.restaurant-rating-section .php-email-form2 .validate {
+  display: none;
+  color: green;
+  margin: 0 0 15px 0;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.restaurant-rating-section .php-email-form2 .error-message {
+  display: none;
+  color: #fff;
+  background: #ed3c0d;
+  text-align: left;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.restaurant-rating-section .php-email-form2 .error-message br + br {
+  margin-top: 25px;
+}
+
+.restaurant-rating-section .php-email-form2 .sent-message {
+  display: none;
+  color: #fff;
+  background: #18d26e;
+  text-align: center;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.restaurant-rating-section .php-email-form2 .loading {
+  display: none;
+  text-align: center;
+  padding: 15px;
+}
+
+.restaurant-rating-section .php-email-form2 .loading:before {
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin: 0 10px -6px 0;
+  border: 3px solid #cda45e;
+  border-top-color: #1a1814;
+  -webkit-animation: animate-loading 1s linear infinite;
+  animation: animate-loading 1s linear infinite;
+}
+
+.restaurant-rating-section .php-email-form2 input, .restaurant-rating-section .php-email-form2 textarea {
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 14px;
+  background: #0c0b09;
+  border-color: #625b4b;
+  color: white;
+}
+
+.restaurant-rating-section .php-email-form2 input::-webkit-input-placeholder, .restaurant-rating-section .php-email-form2 textarea::-webkit-input-placeholder {
+  color: #a49b89;
+}
+
+.restaurant-rating-section .php-email-form2 input::-moz-placeholder, .restaurant-rating-section .php-email-form2 textarea::-moz-placeholder {
+  color: #a49b89;
+}
+
+.restaurant-rating-section .php-email-form2 input::placeholder, .restaurant-rating-section .php-email-form2 textarea::placeholder {
+  color: #a49b89;
+}
+
+.restaurant-rating-section .php-email-form2 input:focus, .restaurant-rating-section .php-email-form2 textarea:focus {
+  border-color: #cda45e;
+}
+
+.restaurant-rating-section .php-email-form2 input {
+  height: 44px;
+}
+
+.restaurant-rating-section .php-email-form2 textarea {
+  padding: 10px 12px;
+}
+
+.restaurant-rating-section .php-email-form2 button[type="submit"] {
+  background: #cda45e;
+  border: 0;
+  padding: 10px 35px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 50px;
+}
+
+.restaurant-rating-section .php-email-form2 button[type="submit"]:hover {
+  background: #d3af71;
+}
+
+
+
+/*--------------------------------------------------------------
 # Testimonials
 --------------------------------------------------------------*/
 .testimonials .testimonial-item {

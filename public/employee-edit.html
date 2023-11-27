@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Employee</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/employee-edit.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Employee</h1>
+        <button id="backToHomeButton" class="btn btn-primary">Back to Employee List</button>
+        <form id="editEmployeeForm" action="#" onsubmit="submitForm(event)">
+            <label for="employeeName">Name:</label>
+            <input type="text" id="employeeName" name="name"> <br><br>
+
+            <label for="role">Role:</label>
+            <input type="text" id="role" name="role"><br><br>
+
+            <button type="submit" id="updateButton">Update Employee</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get the employeeId from the URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const employeeId = urlParams.get('employeeId');
+
+            if (employeeId) {
+                // Fetch the specific employee's data
+                fetch(`/api/employees/${employeeId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(employee => {
+                        // Populate the form fields with the employee's data
+                        document.getElementById('employeeName').value = employee.name;
+                        document.getElementById('role').value = employee.role;
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                console.error('EmployeeId is undefined or null');
+            }
+        });
+
+        function submitForm(event) {
+            event.preventDefault();
+
+            // Gather the updated information from the form inputs
+            const updatedName = document.getElementById('employeeName').value;
+            const updatedRole = document.getElementById('role').value;
+
+            // Prepare the data to be sent in the PUT request
+            const updatedEmployeeData = {
+                name: updatedName,
+                role: updatedRole,
+            };
+
+            // Get the employeeId from the URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const employeeId = urlParams.get('employeeId');
+
+            // Send a PUT request to update the employee
+            fetch(`/api/employees/${employeeId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedEmployeeData),
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Employee updated successfully
+                    alert('Employee updated successfully.');
+                    window.location.href = '/employees.html';
+                } else {
+                    alert('Failed to update employee.');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating employee:', error);
+                alert('An error occurred while updating the employee.');
+            });
+        }
+
+        const backToHomeButton = document.getElementById('backToHomeButton');
+        backToHomeButton.addEventListener('click', () => {
+            window.location.href = '/employees.html'; 
+        });
+    </script>
+</body>
+</html>

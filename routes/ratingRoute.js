@@ -1,27 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const Rating = require('../models/rating');
+const Rating = require('../models/rating'); 
 
-//POST
-router.post('/ratings', async (req, res) => {
+// POST route for creating a new rating
+router.post('/', async (req, res) => {
     try {
         const newRating = new Rating(req.body);
         const savedRating = await newRating.save();
         res.status(201).json(savedRating);
-    } catch(error) {
-        res.status(400).json({message: error.essage});
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
 });
 
-//GET
-router.get('/ratings', async(res, req) => {
+// GET route for fetching all ratings
+router.get('/', async (req, res) => {
     try {
         const ratings = await Rating.find();
         res.json(ratings);
     } catch (error) {
-        res.status(500).json ({message: error.message});
+        res.status(500).json({ message: error.message });
     }
-
 });
 
 module.exports = router;

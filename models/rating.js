@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const ratingSchema = new mongoose.Schema({
+    userName: {
+        type: String,
+        required: true
+    },
     rating: {
         type: Number,
         required: true,
@@ -9,11 +13,6 @@ const ratingSchema = new mongoose.Schema({
     },
     reviewText: {
         type: String,
-        required: false
-    },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
         required: true
     },
     createdAt: {
@@ -22,6 +21,6 @@ const ratingSchema = new mongoose.Schema({
     }
 });
 
-const Rating = mongoose.model('Rating', ratingSchema);
+const rating = mongoose.model('rating', ratingSchema);
 
-module.exports = Rating;
+module.exports = rating;

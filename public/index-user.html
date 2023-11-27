@@ -554,10 +554,6 @@
                   <div class="validate"></div>
               </div>
           </div>
-          <!-- <div class="form-group mt-3">
-              <textarea class="form-control" name="message" rows="5" placeholder="Message"></textarea>
-              <div class="validate"></div>
-          </div> -->
           <div class="mb-3">
               <div class="loading">Loading</div>
               <div class="error-message"></div>
@@ -565,32 +561,104 @@
           </div>
           <div class="text-center"><button type="submit">Book a Table</button></div>
           
-      </form>
-      <script>
-        document.getElementById("reservation-form").addEventListener("submit", function(event) {
-            event.preventDefault();
-            if ("Notification" in window) {
-                if (Notification.permission === "granted") {
-                    new Notification("Table Reserved", {
-                        body: "Your table has been successfully reserved!",
-                    });
-                } else if (Notification.permission !== "denied") {
-                    Notification.requestPermission().then(function (permission) {
-                        if (permission === "granted") {
-                            new Notification("Table Reserved", {
-                                body: "Your table has been successfully reserved!",
-                            });
-                        }
-                    });
-                }
-            }
-        });
-    </script>
-      
-      
+      </form>      
 
       </div>
     </section><!-- End Book A Table Section -->
+
+    <!-- ======= Restaurant Rating Section ======= -->
+    <section id="restaurant-rating" class="restaurant-rating-section">
+      <div class="container" data-aos="fade-up">
+    
+        <div class="section-title">
+          <h2>Restaurant Rating</h2>
+          <p>Leave a Rating and Review</p>
+        </div>
+    
+        <form id="ratingForm" action="/submit-rating" method="post" role="form" class="php-email-form2" data-aos="fade-up" data-aos-delay="100">
+          <div class="row">
+            <div class="col-lg-4 col-md-6 form-group">
+              <input type="text" name="userName" class="form-control" id="userName" placeholder="Your Name" required>
+              <div class="validate"></div>
+            </div>
+            <div class="col-lg-4 col-md-6 form-group mt-3 mt-md-0">
+              <input type="number" class="form-control" name="rating" id="rating" placeholder="Rating (1-5)" min="1" max="5" required>
+              <div class="validate"></div>
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <textarea class="form-control" name="reviewText" rows="5" placeholder="Your Review" required></textarea>
+            <div class="validate"></div>
+          </div>
+          <div class="mb-3">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your rating and review have been submitted. Thank you!</div>
+          </div>
+          <div class="text-center"><button type="submit">Submit Rating and Review</button></div>
+        </form>
+    
+      </div>
+    </section>
+    
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('ratingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+        var object = {};
+        formData.forEach(function(value, key){
+            object[key] = value.trim();
+        });
+
+        // Debugging: log the userName value
+        console.log('User name:', object.userName);
+
+        // Validation
+        if (!object.userName || object.userName === "") {
+            alert('Please enter your name.');
+            return;
+        }
+        if (!object.rating || object.rating === "" || isNaN(object.rating)) {
+            alert('Please enter a valid rating.');
+            return;
+        }
+
+        var jsonData = JSON.stringify(object);
+
+        fetch('/submit-rating', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error('Server responded with an error: ' + response.status);
+            }
+            return response.text();
+        })
+        .then(text => {
+            console.log('Server response:', text);
+            alert('Thank you for your review!');
+            window.location.href = 'index.html';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while submitting your review: ' + error.message);
+        });
+    });
+});
+
+
+
+
+    </script>
+    
 
     <!-- ======= Testimonials Section ======= -->
     <section id="testimonials" class="testimonials section-bg">

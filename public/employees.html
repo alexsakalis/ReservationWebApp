@@ -3,25 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <title>Employees</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/employee-list.css">
 </head>
 <body>
-    <h1>Employee List</h1>
-    <div id="employees"></div>
-
-    
+    <div class="container">
+        <button id="backToHomeButton" class="btn btn-primary">Back to Home </button>
+        <h1 class="mt-4 center-heading">OPA'S EMPLOYEE LIST</h1>
+        <div id="employees" class="mt-3"></div>
+    </div>
 
     <script>
         fetch('/api/employees')
-            .then(response => response.json())
+            .then(response => {
+                if(!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                return response.json();
+            })
             .then(data => {
                 const employeesDiv = document.getElementById('employees');
                 data.forEach(employee => {
                     const div = document.createElement('div');
-                    div.innerHTML = `Name: ${employee.name}, Role: ${employee.role}`;
+                    div.className = 'employee-card';
+                    div.innerHTML = `
+                        <p><strong>Name:</strong> ${employee.name}</p>
+                        <p><strong>Role:</strong> ${employee.role}</p>
+                    `;
+
+                    // Create Edit button
+                    const editButton = document.createElement('button');
+                    editButton.textContent = 'Edit';
+                    editButton.className = 'edit-button';
+                    editButton.onclick = function() {
+                        editEmployee(employee._id);
+                    };
+
+                    // Create Delete button
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.className = 'delete-button';
+                    deleteButton.onclick = function() {
+                        deleteEmployee(employee._id);
+                    };
+
+                    // Append buttons to div
+                    div.appendChild(editButton);
+                    div.appendChild(deleteButton);
+
                     employeesDiv.appendChild(div);
                 });
             })
             .catch(error => console.error('Error fetching employees:', error));
+
+        function editEmployee(id) {
+            window.location.href = `employee-edit.html?employeeId=${id}`;
+        }
+
+        async function deleteEmployee(id) {
+            const confirmation = confirm('Are you sure you want to delete this employee?');
+            if (confirmation) {
+                try {
+                    const response = await fetch(`/api/employees/${id}`, { method: 'DELETE' });
+                    if (!response.ok) {
+                        throw new Error('Error deleting employee');
+                    }
+                    alert('Employee successfully deleted.');
+                    location.reload();
+                } catch (error) {
+                    alert('Failed to delete employee.');
+                    console.error('Error:', error);
+                }
+            }
+        }
+
+        const backToHomeButton = document.getElementById('backToHomeButton');
+        backToHomeButton.addEventListener('click', () => {
+            window.location.href = '/dashboard.html'; 
+        });
     </script>
 </body>
 </html>
