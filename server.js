@@ -9,12 +9,14 @@ const Reservation = require('./models/reservations');
 const Employee = require('./models/employee');
 const Manager = require('./models/manager');
 const Rating = require('./models/rating');
+const Table = require('./models/table');
 
 // Routers
 const reservationRoute = require('./routes/reservationRoute');
 const employeeRoute = require('./routes/employeeRoute');
 const ratingRoute = require('./routes/ratingRoute');
 const managerRoute = require('./routes/managerRoute');
+const tableRoute = require('./routes/tableRoute');
 const saltRounds = 10;
 
 const app = express();
@@ -27,6 +29,7 @@ app.use('/api/reservations', reservationRoute);
 app.use('/api/employees', employeeRoute);
 app.use('/api/ratings', ratingRoute);
 app.use('/api/managers', managerRoute);
+app.use('/api/tables', tableRoute);
 
 app.use(express.static('public'));
 
@@ -67,22 +70,30 @@ app.post('/manager-login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const employee = await Employee.findOne({ email });
-        if (!employee) {
-            return res.status(401).send('Login failed');
-        }
+        // Find the manager by email (replace this with your actual logic)
+        const manager = await Manager.findOne({ email });
 
-        const validPassword = await bcrypt.compare(password, employee.password);
+        // If no manager found, send error
+        if (!manager) {
+            return res.status(400).send('Invalid email or password.');
+        }
+        const validPassword = await bcrypt.compare(password, manager.password);
+
         if (!validPassword) {
-            return res.status(401).send('Login failed');
+            return res.status(400).send('Invalid email or password.');
         }
 
-        res.redirect('/dashboard.html'); 
+        const managerName = "John"; // Replace with the actual manager's name
+
+        // Redirect with the managerName parameter
+        res.redirect(`/dashboard.html?managerName=${encodeURIComponent(managerName)}`);
     } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).send('Server error during login.');
+        console.error('Error during login:', error);
+        res.status(500).send('Server error.');
     }
 });
+
+
 
 // GET route for manager login
 app.get('/manager-login.html', (req, res) => {
@@ -214,7 +225,7 @@ app.post('/employee-login', async (req, res) => {
             return res.status(401).send('Login failed');
         }
 
-        res.redirect('/dashboard.html'); 
+        res.redirect('/dashboard-employee.html'); 
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).send('Server error during login.');
@@ -282,6 +293,26 @@ app.post('/submit-rating', async (req, res) => {
     }
 });
 
+app.post('/save-table', async (req, res) => {
+    try {
+      const { tableNumber, capacity, status } = req.body;
+  
+      // Create a new table document
+      const newTable = new Table({
+        tableNumber,
+        capacity,
+        status,
+      });
+  
+      // Save the table to the database
+      await newTable.save();
+  
+      res.status(201).json({ message: 'Table created and saved successfully' });
+    } catch (error) {
+      console.error('Error saving table:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
 
 

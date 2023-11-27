@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Table</title>
+</head>
+<body>
+    <h1>Create Table</h1>
+    
+    <form id="createTableForm">
+        <div>
+            <label for="tableNumber">Table Number:</label>
+            <input type="number" id="tableNumber" name="tableNumber" required>
+        </div>
+        <div>
+            <label for="capacity">Capacity:</label>
+            <input type="number" id="capacity" name="capacity" required>
+        </div>
+        <div>
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="Available">Available</option>
+                <option value="Occupied">Occupied</option>
+                <option value="Reserved">Reserved</option>
+            </select>
+        </div>
+        <div>
+            <input type="submit" value="Create Table">
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('createTableForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Collect table data from the form
+            const tableNumber = document.getElementById('tableNumber').value;
+            const capacity = document.getElementById('capacity').value;
+            const status = document.getElementById('status').value;
+
+            // Create an object with the table data
+            const tableData = {
+                tableNumber,
+                capacity,
+                status,
+            };
+
+            // Make a POST request to save the table
+            fetch('/api/save-table', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(tableData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle the success response here (e.g., show an alert)
+                alert(data.message);
+            })
+            .catch(error => {
+                // Handle any errors here (e.g., show an error message)
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

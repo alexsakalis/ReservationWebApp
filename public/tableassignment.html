@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Table</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/table-assignment.css">
+</head>
+<body>
+   <!-- Assign Table Section -->
+<div class="assign-table-section">
+    <h2>Assign Table</h2>
+    <form id="assignTableForm" action="/create-table" method="POST">
+        <div class="form-group">
+            <label for="employeeId">Select Employee:</label>
+            <select id="employeeId" name="employeeId" required>
+                <!-- Options will be populated dynamically via JavaScript -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="tableNumber">Select Table:</label>
+            <select id="tableNumber" name="tableNumber" required>
+                <!-- Options will be populated dynamically via JavaScript -->
+            </select>
+        </div>
+        <div class="form-btn">
+            <input type="submit" value="Assign Table">
+        </div>
+    </form>
+</div>
+
+    <!-- Add your back to home button here if needed -->
+    <button id="backToHomeButton">Back to Home</button>
+
+    <script>
+        fetch('/api/employees')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const employeeDropdown = document.getElementById('employeeId');
+            data.forEach(employee => {
+                const option = document.createElement('option');
+                option.value = employee._id;
+                option.textContent = employee.name;
+                employeeDropdown.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching employees:', error));
+    </script>
+</body>
+</html>

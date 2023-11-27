@@ -32,7 +32,7 @@ body {
 }
 
 /* Button Styles */
-button.edit-button, button.delete-button {
+button.edit-button, button.delete-button, button#assignTableButton {
     background-color: #cda45e;
     color: #0c0b09;
     border: none;
@@ -44,7 +44,7 @@ button.edit-button, button.delete-button {
     margin-right: 10px;
 }
 
-button.edit-button:hover, button.delete-button:hover {
+button.edit-button:hover, button.delete-button:hover, button#assignTableButton:hover {
     background-color: #d9ba85;
     transform: scale(1.05);
 }

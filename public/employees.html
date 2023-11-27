@@ -46,9 +46,20 @@
                         deleteEmployee(employee._id);
                     };
 
+                    const assignTableButton = document.createElement('button');
+                    assignTableButton.textContent = 'Assign Table';
+                    assignTableButton.id = 'assignTableButton'; // Assign an ID for styling
+                    assignTableButton.onclick = function() {
+                        // Add the functionality for assigning a table here
+                        // For example, you can redirect to tableassignment.html
+                        window.location.href = 'tableassignment.html';
+                    };
+
+
                     // Append buttons to div
                     div.appendChild(editButton);
                     div.appendChild(deleteButton);
+                    div.appendChild(assignTableButton);
 
                     employeesDiv.appendChild(div);
                 });
@@ -79,6 +90,11 @@
         const backToHomeButton = document.getElementById('backToHomeButton');
         backToHomeButton.addEventListener('click', () => {
             window.location.href = '/dashboard.html'; 
+        });
+
+        const assignTableButton = document.getElementById('assignTableButton');
+        assignTableButton.addEventListener('click', () => {
+            window.location.href = 'tableassignment.html';
         });
     </script>
 </body>

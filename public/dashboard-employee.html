@@ -10,30 +10,19 @@
         <h1>OPA'S</h1>
     </header>
     <div class="main-content">
-        <div id="welcome-message">Loading...</div> <!-- Added a default loading text -->
         <div id="logout-section">
             <a id="logout-button" href="index.html">Logout</a>
         </div>
         
         <ul class="centered-links">
             <li><a href="reservations.html">Manage Reservations</a></li>
-            <li><a href="employees.html">Manage Employees</a></li>
+            <li><a href="tables.html">My Tables</a></li>
             <li><a href="ratings.html">View Ratings</a></li>
         </ul>
     </div>
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const queryParams = new URLSearchParams(window.location.search);
-        const managerName = queryParams.get('managerName');
-
-        const welcomeMessage = document.getElementById("welcome-message");
-        if (managerName) {
-            welcomeMessage.textContent = "Welcome, " + managerName;
-        } else {
-            console.error("Manager name not found in URL. Displaying default welcome message.");
-            welcomeMessage.textContent = "Welcome, Manager"; // Fallback message
-        }
 
         const logoutButton = document.getElementById("logout-button");
         logoutButton.addEventListener("click", function() {
