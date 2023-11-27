@@ -9,7 +9,7 @@
    <!-- Assign Table Section -->
 <div class="assign-table-section">
     <h2>Assign Table</h2>
-    <form id="assignTableForm" action="/create-table" method="POST">
+    <form id="assignTableForm" action="/assign-table" method="POST">
         <div class="form-group">
             <label for="employeeId">Select Employee:</label>
             <select id="employeeId" name="employeeId" required>
@@ -66,6 +66,11 @@
         });
     })
     .catch(error => console.error('Error fetching tables:', error));
+
+    const backToHomeButton = document.getElementById('backToHomeButton');
+        backToHomeButton.addEventListener('click', () => {
+            window.location.href = '/dashboard.html'; 
+        });
     </script>
 </body>
 </html>

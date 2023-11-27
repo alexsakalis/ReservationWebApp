@@ -297,7 +297,6 @@ app.post('/save-table', async (req, res) => {
     try {
       const { tableNumber, capacity, status } = req.body;
   
-      // Create a new table document
       const newTable = new Table({
         tableNumber,
         capacity,
