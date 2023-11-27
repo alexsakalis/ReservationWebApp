@@ -314,6 +314,40 @@ app.post('/save-table', async (req, res) => {
     }
   });
 
+  app.post('/assign-table', async (req, res) => {
+    try {
+        // Extract assignment data from the request body
+        const { employeeId, tableNumber } = req.body;
+
+        // Find the table by table number
+        const table = await Table.findOne({ tableNumber });
+
+        // Check if the table exists
+        if (!table) {
+            return res.status(404).json({ message: 'Table not found' });
+        }
+
+        // Check if the table is already assigned
+        if (table.isAssigned) {
+            return res.status(400).json({ message: 'Table is already assigned' });
+        }
+
+        // Assign the table to the employee (update the table document)
+        table.employeeId = employeeId;
+        table.isAssigned = true;
+        await table.save();
+
+        // You can perform additional logic here, such as updating the employee record
+
+        // Send a success response
+        res.status(200).json({ message: 'Table assigned successfully' });
+    } catch (error) {
+        console.error('Error assigning table:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
 
 
 

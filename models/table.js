@@ -14,8 +14,17 @@ const tableSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ['Available', 'Occupied', 'Reserved'],
-        default: 'Available'
-    }
+        default: 'Available',
+    },
+    employee: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Employee',
+    },
+    isAssigned: {
+        type: Boolean,
+        default: false,
+    },
+
 });
 
 const Table = mongoose.model('Table', tableSchema);

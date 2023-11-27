@@ -13,13 +13,11 @@
         <div class="form-group">
             <label for="employeeId">Select Employee:</label>
             <select id="employeeId" name="employeeId" required>
-                <!-- Options will be populated dynamically via JavaScript -->
             </select>
         </div>
         <div class="form-group">
             <label for="tableNumber">Select Table:</label>
             <select id="tableNumber" name="tableNumber" required>
-                <!-- Options will be populated dynamically via JavaScript -->
             </select>
         </div>
         <div class="form-btn">
@@ -28,7 +26,6 @@
     </form>
 </div>
 
-    <!-- Add your back to home button here if needed -->
     <button id="backToHomeButton">Back to Home</button>
 
     <script>
@@ -49,6 +46,26 @@
             });
         })
         .catch(error => console.error('Error fetching employees:', error));
+
+        fetch('/api/tables')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const tableDropdown = document.getElementById('tableNumber');
+        data.forEach(table => {
+            if (table.status === 'Available') { 
+                const option = document.createElement('option');
+                option.value = table._id;
+                option.textContent = `Table ${table.tableNumber}`;
+                tableDropdown.appendChild(option);
+            }
+        });
+    })
+    .catch(error => console.error('Error fetching tables:', error));
     </script>
 </body>
 </html>
